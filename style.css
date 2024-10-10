@@ -125,7 +125,7 @@ textarea {
 
 	.form-row {
 		flex-direction: column;
-		margin-bottom: 15px;
+		margin-bottom: 0;
 	}
 
 	.form-group {
