@@ -5,7 +5,9 @@
 	<meta charset="UTF-8">
 	<title>Додати новий предмет одягу</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Include the fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Creepster|Nosifer&display=swap" rel="stylesheet">
+	<!-- Link to the updated CSS -->
 	<link rel="stylesheet" href="style.css">
 </head>
 
@@ -14,63 +16,69 @@
 	<div class="container">
 		<h1>Додати новий предмет одягу</h1>
 		<form id="clothingForm">
-			<div class="form-group">
-				<label for="itemName">Назва предмета<span>*</span></label>
-				<input type="text" id="itemName" name="itemName" required>
-				<small class="error-message" id="itemNameError"></small>
+			<div class="form-row">
+				<div class="form-group">
+					<label for="itemName">Назва предмета<span>*</span></label>
+					<input type="text" id="itemName" name="itemName">
+					<small class="error-message" id="itemNameError"></small>
+				</div>
+
+				<div class="form-group">
+					<label for="category">Категорія<span>*</span></label>
+					<select id="category" name="category">
+						<option value="">Виберіть категорію</option>
+						<option value="outerwear">Верхній одяг</option>
+						<option value="tops">Футболки, блузи та сорочки</option>
+						<option value="pants">Штани та джинси</option>
+						<option value="dresses">Сукні</option>
+						<option value="skirts">Спідниці</option>
+						<option value="activewear">Спортивний одяг</option>
+						<option value="knitwear">Трикотаж</option>
+						<option value="suits">Костюми</option>
+						<option value="underwear">Нижня білизна</option>
+						<option value="accessories">Аксесуари</option>
+						<option value="shoes">Взуття</option>
+						<option value="bags">Сумки та рюкзаки</option>
+					</select>
+					<small class="error-message" id="categoryError"></small>
+				</div>
 			</div>
 
-			<div class="form-group">
-				<label for="category">Категорія<span>*</span></label>
-				<select id="category" name="category" required>
-					<option value="">Виберіть категорію</option>
-					<option value="outerwear">Верхній одяг</option>
-					<option value="tops">Футболки, блузи та сорочки</option>
-					<option value="pants">Штани та джинси</option>
-					<option value="dresses">Сукні</option>
-					<option value="skirts">Спідниці</option>
-					<option value="activewear">Спортивний одяг</option>
-					<option value="knitwear">Трикотаж</option>
-					<option value="suits">Костюми</option>
-					<option value="underwear">Нижня білизна</option>
-					<option value="accessories">Аксесуари</option>
-					<option value="shoes">Взуття</option>
-					<option value="bags">Сумки та рюкзаки</option>
-				</select>
-				<small class="error-message" id="categoryError"></small>
+			<div class="form-row">
+				<div class="form-group">
+					<label for="size">Розмір<span>*</span></label>
+					<select id="size" name="size">
+						<option value="">Виберіть розмір</option>
+						<option value="XXS">Дуже-дуже малий (XXS)</option>
+						<option value="XS">Дуже малий (XS)</option>
+						<option value="S">Малий (S)</option>
+						<option value="M">Середній (M)</option>
+						<option value="L">Великий (L)</option>
+						<option value="XL">Дуже великий (XL)</option>
+						<option value="XXL">Дуже-дуже великий (XXL)</option>
+					</select>
+					<small class="error-message" id="sizeError"></small>
+				</div>
+
+				<div class="form-group">
+					<label for="color">Колір<span>*</span></label>
+					<input type="text" id="color" name="color">
+					<small class="error-message" id="colorError"></small>
+				</div>
 			</div>
 
+			<div class="form-row">
+				<div class="form-group">
+					<label for="price">Ціна<span>*</span></label>
+					<input type="number" id="price" name="price" min="0" step="0.01">
+					<small class="error-message" id="priceError"></small>
+				</div>
 
-			<div class="form-group">
-				<label for="size">Розмір<span>*</span></label>
-				<select id="size" name="size" required>
-					<option value="">Виберіть розмір</option>
-					<option value="XXS">Дуже-дуже малий (XXS)</option>
-					<option value="XS">Дуже малий (XS)</option>
-					<option value="S">Малий (S)</option>
-					<option value="M">Середній (M)</option>
-					<option value="L">Великий (L)</option>
-					<option value="XL">Дуже великий (XL)</option>
-					<option value="XXL">Дуже-дуже великий (XXL)</option>
-				</select>
-				<small class="error-message" id="sizeError"></small>
-			</div>
-
-			<div class="form-group">
-				<label for="color">Колір<span>*</span></label>
-				<input type="text" id="color" name="color" required>
-				<small class="error-message" id="colorError"></small>
-			</div>
-			<div class="form-group">
-				<label for="price">Ціна<span>*</span></label>
-				<input type="number" id="price" name="price" min="0" step="0.01" required>
-				<small class="error-message" id="priceError"></small>
-			</div>
-
-			<div class="form-group">
-				<label for="quantity">Кількість<span>*</span></label>
-				<input type="number" id="quantity" name="quantity" min="0" required>
-				<small class="error-message" id="quantityError"></small>
+				<div class="form-group">
+					<label for="quantity">Кількість<span>*</span></label>
+					<input type="number" id="quantity" name="quantity" min="0">
+					<small class="error-message" id="quantityError"></small>
+				</div>
 			</div>
 
 			<div class="form-group">
@@ -78,12 +86,7 @@
 				<textarea id="description" name="description" rows="4"></textarea>
 			</div>
 
-			<div class="form-group">
-				<label for="image">Завантажити зображення</label>
-				<input type="file" id="image" name="image" accept="image/*">
-			</div>
-
-			<button type="submit">ADD ITEM</button>
+			<button type="submit">Додати предмет</button>
 		</form>
 	</div>
 

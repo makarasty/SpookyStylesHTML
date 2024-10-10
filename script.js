@@ -7,135 +7,147 @@ const clothingForm = /** @type {HTMLFormElement} */ (
 	document.getElementById("clothingForm")
 );
 
+const itemName = /** @type {HTMLInputElement} */ (
+	document.getElementById("itemName")
+);
+const category = /** @type {HTMLSelectElement} */ (
+	document.getElementById("category")
+);
+const size = /** @type {HTMLSelectElement} */ (document.getElementById("size"));
+
+const color = /** @type {HTMLInputElement} */ (
+	document.getElementById("color")
+);
+
+const price = /** @type {HTMLInputElement} */ (
+	document.getElementById("price")
+);
+
+const quantity = /** @type {HTMLInputElement} */ (
+	document.getElementById("quantity")
+);
+
+const description = /** @type {HTMLTextAreaElement} */ (
+	document.getElementById("description")
+);
+
+/**
+ * @type {Object<string, {required: boolean, validate: function(string): boolean, errorMessage: string}>}
+ */
+const validationRules = {
+	itemName: {
+		required: true,
+		validate: (value) => value.trim() !== "",
+		errorMessage: "Назва предмета є обов'язковою.",
+	},
+	category: {
+		required: true,
+		validate: (value) => value !== "",
+		errorMessage: "Виберіть категорію.",
+	},
+	size: {
+		required: true,
+		validate: (value) => value !== "",
+		errorMessage: "Виберіть розмір.",
+	},
+	color: {
+		required: true,
+		validate: (value) => value.trim() !== "",
+		errorMessage: "Введіть колір.",
+	},
+	price: {
+		required: true,
+		validate: (value) =>
+			value !== "" && !isNaN(parseFloat(value)) && parseFloat(value) >= 0,
+		errorMessage: "Введіть коректну ціну.",
+	},
+	quantity: {
+		required: true,
+		validate: (value) =>
+			value !== "" && Number.isInteger(parseInt(value)) && parseInt(value) >= 0,
+		errorMessage: "Введіть коректну кількість.",
+	},
+};
+
+/**
+ * @param {HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement} field
+ */
+function validateField(field) {
+	const fieldName = field.name;
+	const rule = validationRules[fieldName];
+	if (!rule) return true;
+
+	const isValid = rule.validate(field.value);
+	const formGroup = /** @type {HTMLElement} */ (field.closest(".form-group"));
+	const errorMessageElement = /** @type {HTMLElement} */ (
+		formGroup.querySelector(".error-message")
+	);
+
+	if (!isValid) {
+		formGroup.classList.add("invalid");
+		errorMessageElement.textContent = rule.errorMessage;
+	} else {
+		formGroup.classList.remove("invalid");
+		errorMessageElement.textContent = "";
+	}
+
+	return isValid;
+}
+
+for (const fieldName in validationRules) {
+	const field =
+		/** @type {HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement} */ (
+			clothingForm.elements.namedItem(fieldName)
+		);
+	field.addEventListener("input", () => validateField(field));
+}
+
 clothingForm.addEventListener("submit", (event) => {
 	event.preventDefault();
 
-	const formGroups = document.querySelectorAll(".form-group");
+	let isFormValid = true;
 
-	formGroups.forEach((group) => {
-		group.classList.remove("error");
-
-		const errorMessage = /** @type {HTMLElement} */ (
-			group.querySelector(".error-message")
-		);
-		if (errorMessage) {
-			errorMessage.textContent = "";
+	for (const fieldName in validationRules) {
+		const field =
+			/** @type {HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement} */ (
+				clothingForm.elements.namedItem(fieldName)
+			);
+		const isValid = validateField(field);
+		if (!isValid) {
+			isFormValid = false;
 		}
-	});
-
-	let isValid = true;
-
-	const itemName = /** @type {HTMLInputElement} */ (
-		document.getElementById("itemName")
-	);
-	const itemNameGroup = itemName.parentElement;
-	if (itemName.value.trim() === "") {
-		isValid = false;
-
-		const ine = /** @type {HTMLElement} */ (
-			document.getElementById("itemNameError")
-		);
-
-		ine.textContent = "Назва предмета є обов'язковою.";
-		itemNameGroup?.classList.add("error");
 	}
 
-	const category = /** @type {HTMLInputElement} */ (
-		document.getElementById("category")
-	);
-	const categoryGroup = category.parentElement;
-	if (category.value === "") {
-		isValid = false;
-
-		const ce = /** @type {HTMLElement} */ (
-			document.getElementById("categoryError")
-		);
-
-		ce.textContent = "Категорія є обов'язковою.";
-		categoryGroup?.classList.add("error");
-	}
-
-	const size = /** @type {HTMLInputElement} */ (
-		document.getElementById("size")
-	);
-	const sizeGroup = size.parentElement;
-	if (size.value === "") {
-		isValid = false;
-
-		const se = /** @type {HTMLElement} */ (
-			document.getElementById("sizeError")
-		);
-
-		se.textContent = "Розмір є обов'язковим.";
-		sizeGroup?.classList.add("error");
-	}
-
-	const color = /** @type {HTMLInputElement} */ (
-		document.getElementById("color")
-	);
-	const colorGroup = color.parentElement;
-	if (color.value.trim() === "") {
-		isValid = false;
-
-		const ce = /** @type {HTMLElement} */ (
-			document.getElementById("colorError")
-		);
-
-		ce.textContent = "Колір є обов'язковим.";
-		colorGroup?.classList.add("error");
-	}
-
-	const price = /** @type {HTMLInputElement} */ (
-		document.getElementById("price")
-	);
-	const priceGroup = price.parentElement;
-	if (price.value === "" || parseFloat(price.value) < 0) {
-		isValid = false;
-
-		const pe = /** @type {HTMLElement} */ (
-			document.getElementById("priceError")
-		);
-
-		pe.textContent = "Необхідно ввести дійсну ціну.";
-		priceGroup?.classList.add("error");
-	}
-
-	const quantity = /** @type {HTMLInputElement} */ (
-		document.getElementById("quantity")
-	);
-	const quantityGroup = quantity.parentElement;
-	if (quantity.value === "" || parseInt(quantity.value) < 0) {
-		isValid = false;
-
-		const qe = /** @type {HTMLElement} */ (
-			document.getElementById("quantityError")
-		);
-
-		qe.textContent = "Необхідно ввести дійсну кількість.";
-		quantityGroup?.classList.add("error");
-	}
-
-	if (isValid) {
-		const desc = /** @type {HTMLInputElement} */ (
-			document.getElementById("description")
-		);
-
-		const clothingItem = {
-			itemName: itemName.value.trim(),
-			category: category.value,
-			size: size.value,
-			color: color.value.trim(),
-			price: parseFloat(price.value),
-			quantity: parseInt(quantity.value),
-			description: desc.value.trim(),
-		};
-
-		clothingItems.push(clothingItem);
-
-		console.log(JSON.stringify(clothingItems, null, 2));
-
-		alert("Форма успішно відправлена!");
+	if (isFormValid) {
+		sendConsoleReply();
 
 		clothingForm.reset();
+	} else {
+		const firstInvalidField = /** @type {HTMLElement} */ (
+			clothingForm.querySelector(
+				".invalid input, .invalid select, .invalid textarea",
+			)
+		);
+		if (firstInvalidField) {
+			firstInvalidField.focus();
+		}
 	}
 });
+
+function sendConsoleReply() {
+	const clothingItem = {
+		itemName: itemName.value.trim(),
+		category: category.value,
+		size: size.value,
+		color: color.value.trim(),
+		price: parseFloat(price.value),
+		quantity: parseInt(quantity.value),
+		description: description.value.trim(),
+	};
+
+	clothingItems.push(clothingItem);
+
+	console.log(JSON.stringify(clothingItems, null, 2));
+
+	alert("Форма успішно відправлена!");
+}
